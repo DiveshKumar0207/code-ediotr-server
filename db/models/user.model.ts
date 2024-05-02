@@ -10,7 +10,6 @@ export interface IUser extends mongoose.Document{
 }
 
 
-
 // Creating user schema
 const userSchema  = new mongoose.Schema<IUser>({
     name : {
