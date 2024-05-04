@@ -6,7 +6,9 @@ export interface IDocument extends mongoose.Document {
     content : {
         filename : String,
         filedata : String,
-    }
+    };
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 

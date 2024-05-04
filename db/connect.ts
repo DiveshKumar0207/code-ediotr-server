@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-const DbUrl = process.env.mongoURL || "mongodb://localhost:27017/";
+const DbUrl = process.env.mongoURL;
 
 const connectToDatabase = async (): Promise<void> => {
   try {

@@ -8,7 +8,9 @@ export interface IChat extends mongoose.Document {
         sender : typeof mongoose.Schema.ObjectId,
         message : String,
         createdAt : Date,
-    }
+    };
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 // Creating document schema

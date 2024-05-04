@@ -1,4 +1,6 @@
+import { NextFunction } from "express";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs"
 
 // Define an interface for the User document
 export interface IUser extends mongoose.Document{
@@ -7,6 +9,7 @@ export interface IUser extends mongoose.Document{
     password: string;
     isActive : Boolean;
     createdAt: Date;
+    updatedAt: Date;
 }
 
 
@@ -33,15 +36,26 @@ const userSchema  = new mongoose.Schema<IUser>({
         type: Boolean,
         default: false
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
 }, 
 {
     timestamps: true,
 }
 );
+
+// Middleware for hashing our password
+userSchema.pre<IUser>('save', async function(next){
+    const saltRound = 12;
+
+    if(this.isModified('password')){
+        try {
+            this.password = await bcrypt.hash(this.password, saltRound)
+        } catch (error) {
+            next(new Error("hash failed"));
+        }
+    }
+
+    next();
+})
 
 // created user model
 const userModel = mongoose.model<IUser>('User', userSchema);
