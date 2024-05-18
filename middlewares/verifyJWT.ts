@@ -4,12 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 const publickey = fs.readFileSync('public.pem', 'utf8');
 
-
-interface IJwt extends  jwt.JwtPayload {
-    user : String,
-    email : String,
-}
-
+import { IJwt } from "../express";
 
 
 const verifyJWT = (req:Request, res: Response, next: NextFunction)=>{
@@ -28,12 +23,11 @@ const verifyJWT = (req:Request, res: Response, next: NextFunction)=>{
                 algorithms: ["ES256"]
             }
         ) 
-                    
-      
-    
-        req.user = decoded.user;
-        
-        next();
+                         
+    req.user = decoded;
+
+    next();
+
     } catch (error) {
         res.status(401).json({message: "unauthorized"});
     }

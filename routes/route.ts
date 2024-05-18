@@ -5,8 +5,9 @@ const router = express.Router();
 import verifyJWT from "../middlewares/verifyJWT";
 
 import { login, signUp } from "../controllers/authController";
+import { cCodeClient } from "../grpc/grpcClient";
 
-router.post("/signup", [
+router.post("/auth/signup", [
     body("name").trim().isLength({min: 3}).escape(),
     body("email")
       .trim()
@@ -35,7 +36,7 @@ router.post("/signup", [
 ], signUp);
 
 
-router.post("/login",[
+router.post("/auth/login",[
   body("email")
     .trim()
     .isEmail()
@@ -47,9 +48,18 @@ router.post("/login",[
     .escape(),
 ] , login);
 
-router.get("/test", verifyJWT, (req:any, res:any)=>{
-  res.send("tested");
+router.get("/testgrpc",  (req:any, res:any)=>{
+  const {code, input} = req.body;
 
+  cCodeClient.take({code,input}, (err : any, response: any)=>{
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    return res.json(response);
+
+  })
 })
 
 export default router;

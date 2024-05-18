@@ -45,7 +45,7 @@ const signUp =async (req:Request, res: Response, next : NextFunction)=>{
         const userCreated = await newUser.save();
 
         const payload = {
-            user : userCreated._id,
+            userId : userCreated._id,
             email : userCreated.email,
         }
 
@@ -86,7 +86,7 @@ const login = async (req:Request, res: Response, next: NextFunction)=>{
         }
 
         const payload = {
-            user : isUserExisted._id,
+            userId : isUserExisted._id,
             email : isUserExisted.email,
         }
 
@@ -100,13 +100,6 @@ const login = async (req:Request, res: Response, next: NextFunction)=>{
     }
 
 }
-
-
-const logout =(req:Request, res: Response)=>{
-    
-
-}
-
-  
+ 
 
 export {signUp, login};

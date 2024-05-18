@@ -1,10 +1,13 @@
-// to make the file a module and avoid the TypeScript error
-export {}
+import { Request } from 'express';
 
-declare global {
-  namespace Express {
-    export interface Request {
-      user?: any;
-    }
+// Interface for JWT payload, used in verifyjwt middleware
+interface IJwt extends  jwt.JwtPayload {
+    userId : ObjectId,            //can add userRole here if required 
+}
+
+// Globally chnage "Request" type in server
+declare module 'express' {
+  interface Request {
+    user?: IJwt; // Replace `any` with the appropriate type for your user object
   }
 }
